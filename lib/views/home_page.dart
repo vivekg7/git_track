@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'commits_page.dart';
 
 class HomePage extends StatefulWidget {
