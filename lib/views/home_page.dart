@@ -38,12 +38,23 @@ class HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            RaisedButton(
-              padding: EdgeInsets.only(left: 30.0, right: 30.0),
-              child: Text("Submit"),
-              onPressed: () {
-                _onSubmit();
-              },
+            Row(
+              children: <Widget>[
+                Expanded(child: Container(),),
+                RaisedButton(
+                  padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10.0, right: 10.0),
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  child: Text(
+                    "Submit",
+                    style: TextStyle(fontSize: 30.0),
+                  ),
+                  onPressed: () {
+                    _onSubmit();
+                  },
+                ),
+                Expanded(child: Container(),),
+              ],
             )
           ],
         ),
