@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:git_track/utils/navigation.dart';
 
 import 'commits_page.dart';
 

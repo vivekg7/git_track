@@ -26,6 +26,12 @@ class CommitsPageState extends State<CommitsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(repo+' <'+user+'>'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _fetchdata,
+          )
+        ],
       ),
       body: commits == null
             ? Container()
@@ -38,7 +44,6 @@ class CommitsPageState extends State<CommitsPage> {
     var response = await http.get(url);
     setState(() {
       commits = jsonDecode(response.body);
-      print(commits[0]);
     });
   }
 
