@@ -71,6 +71,11 @@ class HomePageState extends State<HomePage> {
                 Expanded(child: Container(),),
               ],
             ),
+            Container(height: 10.0,),
+            Text(
+              "-- History --",
+              textScaleFactor: 2.0,
+            ),
             Expanded(
               child: showUrls(),
             ),
