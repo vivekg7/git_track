@@ -35,7 +35,7 @@ class HomePageState extends State<HomePage> {
             Padding(
               padding: EdgeInsets.all(20.0),
               child: TextField(
-                autofocus: true,
+                autofocus: false,
                 controller: controller,
                 keyboardType: TextInputType.url,
                 decoration: InputDecoration(
