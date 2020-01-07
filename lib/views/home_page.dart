@@ -30,12 +30,12 @@ class HomePageState extends State<HomePage> {
         title: Text("Git Track"),
       ),
       body: Center(
-        child: ListView(
+        child: Column(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(20.0),
               child: TextField(
-                autofocus: false,
+                autofocus: true,
                 controller: controller,
                 keyboardType: TextInputType.url,
                 decoration: InputDecoration(
@@ -47,6 +47,7 @@ class HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
                 onSubmitted: (val) {
                   _onSubmit(controller.text);
+                  controller.text = "";
                 },
               ),
             ),
@@ -64,12 +65,15 @@ class HomePageState extends State<HomePage> {
                   onPressed: () {
                     _insertToDatabase(controller.text);
                     _onSubmit(controller.text);
+                    controller.text = "";
                   },
                 ),
                 Expanded(child: Container(),),
               ],
             ),
-            showUrls(),
+            Expanded(
+              child: showUrls(),
+            ),
           ],
         ),
       ),
@@ -88,7 +92,7 @@ class HomePageState extends State<HomePage> {
       Future<List<Url>> noteListFuture = databaseHelper.getUrlList();
       noteListFuture.then((urlList) {
         setState(() {
-          this.urlList = urlList;
+          this.urlList = urlList.reversed.toList();
           this.count = urlList.length;
         });
       });
@@ -96,13 +100,19 @@ class HomePageState extends State<HomePage> {
   }
 
   _insertToDatabase(String text) {
-    for (int i=0; i<count; i++) {
-      if (urlList[i].url == text) {
-        return;
-      }
-    }
+//    for (int i=0; i<count; i++) {
+//      if (urlList[i].url == text) {
+//        return;
+//      }
+//    }
     Url url = new Url(DateTime.now().toIso8601String(), text);
     databaseHelper.insertUrl(url).then((val) {
+      getSavedUrl();
+    });
+  }
+
+  _deleteUrl(int id) {
+    databaseHelper.deleteUrl(id).then((val) {
       getSavedUrl();
     });
   }
@@ -112,19 +122,32 @@ class HomePageState extends State<HomePage> {
       return Container();
     }
     return ListView.builder(
+      padding: EdgeInsets.only(top: 10.0),
       itemCount: this.count,
       itemBuilder: (BuildContext context, int position) {
-        return RaisedButton(
-          padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10.0, right: 10.0),
-          color: Colors.orange,
-          textColor: Colors.white,
-          child: Text(
-            urlList[position].url,
-            style: TextStyle(fontSize: 30.0),
-          ),
-          onPressed: () {
-            _onSubmit(urlList[position].url);
-          },
+        return Row(
+          children: <Widget>[
+            Expanded(
+              child: RaisedButton(
+                padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10.0, right: 10.0),
+                color: Colors.orange,
+                textColor: Colors.white,
+                child: Text(
+                  urlList[position].url,
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                onPressed: () {
+                  _onSubmit(urlList[position].url);
+                },
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                _deleteUrl(urlList[position].id);
+              },
+            )
+          ],
         );
       },
     );

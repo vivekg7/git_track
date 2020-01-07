@@ -26,12 +26,6 @@ class CommitsPageState extends State<CommitsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(repo+' <'+user+'>'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: _fetchdata,
-          )
-        ],
       ),
       body: commits == null
             ? Container()
@@ -45,21 +39,27 @@ class CommitsPageState extends State<CommitsPage> {
     setState(() {
       commits = jsonDecode(response.body);
     });
+    return true;
   }
 
   showCommits() {
-    return ListView.builder(
-      itemCount: commits.length,
-      itemBuilder: (BuildContext context, int position) {
-        return Card(
-          color: Colors.white,
-          elevation: 2.0,
-          child: ListTile(
-            leading: Text(commits[position]["commit"]["committer"]["date"]),
-            title: Text(commits[position]["commit"]["message"]),
-          ),
-        );
+    return RefreshIndicator(
+      onRefresh: () {
+        return _fetchdata();
       },
+      child: ListView.builder(
+        itemCount: commits.length,
+        itemBuilder: (BuildContext context, int position) {
+          return Card(
+            color: Colors.white,
+            elevation: 2.0,
+            child: ListTile(
+              leading: Text(commits[position]["commit"]["committer"]["date"]),
+              title: Text(commits[position]["commit"]["message"]),
+            ),
+          );
+        },
+      ),
     );
   }
 
