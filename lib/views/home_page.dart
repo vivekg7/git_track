@@ -46,6 +46,7 @@ class HomePageState extends State<HomePage> {
                 style: TextStyle(),
                 textAlign: TextAlign.center,
                 onSubmitted: (val) {
+                  _insertToDatabase(controller.text);
                   _onSubmit(controller.text);
                   controller.text = "";
                 },
